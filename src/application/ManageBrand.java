@@ -28,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 
 public class ManageBrand extends Application{
