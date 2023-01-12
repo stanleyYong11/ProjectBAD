@@ -33,8 +33,8 @@ public class ManageBrand extends Application{
 	
 	Scene sc;
 	GridPane gpmanage;
+	GridPane gpmanage2;
 	BorderPane bpmanage;
-	
 	
 	public void table() {
 		branddetail = new TableView<Brand>();
@@ -55,10 +55,11 @@ public class ManageBrand extends Application{
 	public void init() {
 		bpmanage= new BorderPane();
 		gpmanage = new GridPane();
+		gpmanage2 = new GridPane();
 		
-		btinsertbrand = new Button("Insert");
-		btupdatebrand = new Button("Update");
-		btdeletebrand = new Button("Delete");
+		btinsertbrand = new Button("Insert Brand");
+		btupdatebrand = new Button("Update Brand");
+		btdeletebrand = new Button("Delete Brand");
 		
 		tfnameinput = new TextField("Brand Name");
 		lbbrand = new Label("Brand Name: ");
@@ -74,13 +75,17 @@ public class ManageBrand extends Application{
 		
 		hbutton = new HBox(10);
 		hbutton.getChildren().addAll(btinsertbrand,btupdatebrand, btdeletebrand);
-		bpmanage.setCenter(hbutton);
-		gpmanage.add(hbutton, 0, 1);
-		gpmanage.setAlignment(Pos.CENTER);
+		gpmanage2.add(hbutton, 0, 0);
+		gpmanage2.setAlignment(Pos.CENTER);
+		gpmanage2.setPadding(new Insets(10, 0, 20, 0));
+//		bpmanage.setCenter(hbutton);
+//		gpmanage.add(hbutton, 0, 1);
+		gpmanage.setAlignment(Pos.CENTER_LEFT);
+		gpmanage.setPadding(new Insets(10, 0, 0, 0));
 		
 		
 		bpmanage.setCenter(gpmanage);
-	
+		bpmanage.setBottom(gpmanage2);
 	}
 
 	public static void main(String[] args) {
