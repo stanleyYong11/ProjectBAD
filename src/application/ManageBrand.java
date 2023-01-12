@@ -1,17 +1,28 @@
 package application;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import connect.DBConnect;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableSelectionModel;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +36,7 @@ public class ManageBrand extends Application{
 	Label lbbrand;
 	TextField tfnameinput;
 	TableView<Brand> branddetail;
+	ArrayList<Brand> brandList;
 	ScrollPane spbrand;
 	
 	HBox hbisi;
@@ -36,26 +48,53 @@ public class ManageBrand extends Application{
 	GridPane gpmanage2;
 	BorderPane bpmanage;
 	
+	int BrandID;
+	
+	@SuppressWarnings("unchecked")
 	public void table() {
 		branddetail = new TableView<Brand>();
 		TableColumn<Brand,Integer> 	brandid = new TableColumn<Brand, Integer>("Brand ID");
 		brandid.setMinWidth(100);
-		brandid.setCellValueFactory(new PropertyValueFactory<Brand, Integer>("Brand ID"));
+		brandid.setCellValueFactory(new PropertyValueFactory<Brand, Integer>("BrandID"));
 		
 		
 		TableColumn<Brand,String> 	brandname = new TableColumn<Brand, String>("Brand Name");
 		brandname.setMinWidth(300);
-		brandname.setCellValueFactory(new PropertyValueFactory<Brand, String>("Brand Name"));
+		brandname.setCellValueFactory(new PropertyValueFactory<Brand, String>("BrandName"));
 		
 		branddetail.getColumns().addAll(brandid, brandname);
 		
 		bpmanage.setTop(branddetail);
 	}
 	
+	public void refreshTable() {
+		brandList.clear();
+		getBrand();
+		ObservableList<Brand> brandObs = FXCollections.observableArrayList(brandList);
+		branddetail.setItems(brandObs);
+	}
+	
+	public void getBrand() {
+		DBConnect dbConnect = DBConnect.getInstance();
+		ResultSet rs = null;
+		rs = dbConnect.executeQuery("SELECT * FROM `brand`");
+		try {
+			while(rs.next()) {
+				int BrandID = rs.getInt("BrandID");
+				String BrandName = rs.getString("BrandName");
+				brandList.add(new Brand(BrandID,BrandName));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void init() {
 		bpmanage= new BorderPane();
 		gpmanage = new GridPane();
 		gpmanage2 = new GridPane();
+		brandList = new ArrayList<>();
 		
 		btinsertbrand = new Button("Insert Brand");
 		btupdatebrand = new Button("Update Brand");
@@ -88,6 +127,77 @@ public class ManageBrand extends Application{
 		bpmanage.setBottom(gpmanage2);
 	}
 
+	public void setEvent() {
+		btinsertbrand.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				DBConnect dbConnect = DBConnect.getInstance();
+				dbConnect.execute(String.format("INSERT INTO `brand` (`BrandID`, `BrandName`) VALUES (NULL, '%s');", tfnameinput.getText()));
+				
+				refreshTable();
+			}
+			
+		});
+		
+		branddetail.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent arg0) {
+				TableSelectionModel<Brand> selectedBrand = branddetail.getSelectionModel();
+				selectedBrand.setSelectionMode(SelectionMode.SINGLE);
+				
+				Brand brand = selectedBrand.getSelectedItem();
+				
+				if (brand != null){
+					tfnameinput.setText(brand.getBrandName());
+					BrandID = brand.getBrandID();
+				}
+			}
+		});
+		
+		btupdatebrand.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				DBConnect dbConnect = DBConnect.getInstance();
+				
+				PreparedStatement ps = dbConnect.prepareStatement("update brand set BrandName = ? where BrandID = ?");
+				
+				try {
+					ps.setString(1, tfnameinput.getText());
+					ps.setInt(2, BrandID);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				refreshTable();
+			}
+		});
+		
+		btdeletebrand.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent arg0) {
+				DBConnect dbConnect = DBConnect.getInstance();
+				
+				PreparedStatement ps = dbConnect.prepareStatement("delete from brand where BrandID = ?");
+				
+				try {
+					ps.setInt(1, BrandID);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				refreshTable();
+			}
+			
+		});
+		
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -97,6 +207,8 @@ public class ManageBrand extends Application{
 		// TODO Auto-generated method stub
 		init();
 		table();
+		refreshTable();
+		setEvent();
 		primaryStage.setScene(sc);
 		primaryStage.setTitle("Manage Brand");
 		primaryStage.setResizable(false);

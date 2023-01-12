@@ -5,8 +5,8 @@ public class Brand {
 	private String BrandName;
 	
 	public Brand(int brandID, String brandName) {
-		BrandID = brandID;
-		BrandName = brandName;
+		this.BrandID = brandID;
+		this.BrandName = brandName;
 	}
 
 	public int getBrandID() {
@@ -14,7 +14,7 @@ public class Brand {
 	}
 
 	public void setBrandID(int brandID) {
-		BrandID = brandID;
+		this.BrandID = brandID;
 	}
 
 	public String getBrandName() {
@@ -22,7 +22,8 @@ public class Brand {
 	}
 
 	public void setBrandName(String brandName) {
-		BrandName = brandName;
+		this.BrandName = brandName;
 	}
+	
 	
 }
