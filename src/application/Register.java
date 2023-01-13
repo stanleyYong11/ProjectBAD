@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,10 +13,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Register extends Application {
@@ -42,21 +49,34 @@ Button regBtn;
 Button backLoginBtn;
 
 BorderPane regBPane;
-BorderPane luarBPane;
 
 GridPane gp;
 Scene scenes;
 
-VBox YaregBtn;
+VBox forregBtn;
 HBox genderRadBtn;
-
+Background 
+backg,
+backg1,
+backg2;
+BackgroundFill
+backFill,
+backFill1,
+backFill2;
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
 	public void init() {
+		backg = new Background(backFill);
+		backg1 = new Background(backFill1);
+		backg2 = new Background(backFill2);
+		backFill1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		backFill2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+		
 		regLBL = new Label("Register");
+		regLBL.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 		nameLBL = new Label("Name: ");
 		genderLBL = new Label("Gender : ");
 		emailLBL = new Label("Email :");
@@ -84,15 +104,25 @@ HBox genderRadBtn;
 		coPassPF.setPromptText("Confirm Password");
 
 		regBtn = new Button("Register");
-		YaregBtn = new VBox(15);
+		regBtn.setBackground(backg1);
+		regBtn.setTextFill(Color.WHITE);
+		
+		forregBtn = new VBox(15);
+		
 		backLoginBtn = new Button("Back to Login");
+		backLoginBtn.setBackground(backg1);
+		backLoginBtn.setTextFill(Color.WHITE);
+		
 		regBtn.setMinWidth(250);
 		backLoginBtn.setMinWidth(250);
 
-		YaregBtn.getChildren().add(regBtn);
-		YaregBtn.getChildren().add(backLoginBtn);
-
+		forregBtn.getChildren().add(regBtn);
+		forregBtn.getChildren().add(backLoginBtn);
+	}
+	
+		public void positions() {
 		gp = new GridPane();
+		gp.add(regLBL, 0, 0);
 		gp.add(nameLBL, 0, 1);
 		gp.add(nameTF, 0, 2);
 		gp.add(genderLBL, 0, 3);
@@ -103,23 +133,32 @@ HBox genderRadBtn;
 		gp.add(passPF, 0, 8);
 		gp.add(coPasswordLBL, 0, 9);
 		gp.add(coPassPF, 0, 10);
-		gp.add(YaregBtn, 0, 11);
-		gp.setVgap(20);
+		gp.add(forregBtn, 0, 11);
+		gp.setVgap(15);
 		regBPane = new BorderPane();
-		regBPane.setTop(regLBL);
 		regBPane.setCenter(gp);
-		BorderPane.setAlignment(regLBL, Pos.BOTTOM_CENTER);
-		regLBL.setAlignment(Pos.BOTTOM_CENTER);
+		
+		GridPane.setHalignment(regLBL, HPos.CENTER);
+        gp.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(gp, Pos.CENTER);
 		gp.setAlignment(Pos.CENTER);
-		BorderPane.setAlignment(gp, Pos.CENTER);
-		regBPane.setPadding(new Insets(100, 50, 100, 50));
+		}
+		
+		public void display() {	
+		regBPane.setPadding(new Insets(100, 90, 100, 90));
 		scenes = new Scene(regBPane, 600, 700);
-
+		
+		  gp.setStyle("-fx-background-color: white;");
+		  BackgroundFill backfills = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
+			Background backgrnd = new Background(backfills);
+			regBPane.setBackground(backgrnd);
 	}
 		
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		init();
+		positions();
+		display();
 		regBtn.setOnAction((event) -> {
 		String pass = passPF.getText();
 			System.out.println(pass);
@@ -172,7 +211,6 @@ HBox genderRadBtn;
 			namaemail.setContentText("Email must contain exactly 1 '@'");
 			namaemail.show(); 
 		}
-//Must contain exactly one ‘.’ after ‘@’ for separating [provider] and “com” BELOM
 		
 		//Must ends with ‘.com’
 		else if (!emailTF.getText().endsWith(".com")) {
@@ -198,5 +236,3 @@ HBox genderRadBtn;
 			primaryStage.show();
 	}
 }
-
-
