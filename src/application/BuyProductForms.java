@@ -25,6 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Cart;
+import model.Watch;
 import model.WrapperWatch;
 
 public class BuyProductForms extends Application{
@@ -32,19 +34,27 @@ public class BuyProductForms extends Application{
 	Scene scene;
 	BorderPane bp;
 	GridPane gp;
+	FlowPane fp;
 	
 	BorderPane bp2;
 	GridPane gp2;
 	
+	BorderPane bp3;
+	
 	TableView<WrapperWatch> watchTable;
 	ArrayList<WrapperWatch> watchList;
 	
+	 TableView<Cart> cartTable;
+	 ArrayList<Cart> cartList;
+ 	
 	Label select;
 	Label selectValue;
 	
 	Label qty;
 	Spinner<Integer> qtySP;
 	Button addBtn;
+	Button clearBtn;
+	Button checkoutBtn;
 	
 	public void init() {
 		bp = new BorderPane();
@@ -57,12 +67,18 @@ public class BuyProductForms extends Application{
 		watchTable.setMaxHeight(250);
 		watchList = new ArrayList<>();
 		
+		cartTable = new TableView<>();
+		cartTable.setMaxHeight(250);
+		watchList = new ArrayList<>();
+		
 		select = new Label("Selected Watch: ");
 		selectValue = new Label("None");
 		
 		qty = new Label("Quantity: ");
 		qtySP = new Spinner<>();
 		addBtn = new Button("Add Watch To Cart");
+		clearBtn = new Button("Clear Cart");
+		checkoutBtn = new Button("Checkout");
 		
 		scene = new Scene(bp, 1000, 700);
 	}
@@ -78,9 +94,16 @@ public class BuyProductForms extends Application{
 		gp2.add(addBtn, 1, 2);
 		gp2.setAlignment(Pos.CENTER);
 		
+		fp.getChildren().add(clearBtn);
+		fp.getChildren().add(checkoutBtn);
+		
+		bp2.setCenter(cartTable);
+		
 		bp.setTop(watchTable);
 		bp.setCenter(gp);
 		bp.setCenter(gp2);
+		bp.setBottom(cartTable);
+		bp.setBottom(fp);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,39 +119,49 @@ public class BuyProductForms extends Application{
 		watchPriceColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, Integer>("WatchPrice"));
 		
 		watchTable.getColumns().addAll(watchIDColumn, watchNameColumn, watchBrandColumn, watchPriceColumn);
+		
+		TableColumn<Cart, Integer> cartUserIDColumn = new TableColumn<Cart, Integer>("User ID");
+		TableColumn<Cart, Integer> cartWatchIDColumn = new TableColumn<Cart, Integer>("Watch ID");
+		TableColumn<Cart, Integer> cartQuantity = new TableColumn<Cart, Integer>("Quantity");
+		
+		cartUserIDColumn.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("UserID"));
+		cartWatchIDColumn.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("WatchID"));
+		cartQuantity.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
+		
+		cartTable.getColumns().addAll(cartUserIDColumn, cartWatchIDColumn, cartQuantity);
 	}
 	
-//	public void refreshTable() {
-//		watchList.clear();
-//		getWatch();
-//		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
-//		watchTable.setItems(watchObs);
-//	}
+	public void refreshTable() {
+		watchList.clear();
+		getWatch();
+		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
+		watchTable.setItems(watchObs);
+	}
 	
-//	public void getWatch() {
-//		DBConnect dbConnect = DBConnect.getInstance();
-//		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
-//		
-//		try {
-//			while(rs.next()) {
-//				Integer watchID = rs.getInt("WatchID");
-//				String watchName = rs.getString("WatchName");
-//				String watchBrand = rs.getString("WatchBrand");
-//				Integer watchPrice = rs.getInt("WatchPrice");
-//				Integer watchStock = rs.getInt("Stock");
-//				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void getWatch() {
+		DBConnect dbConnect = DBConnect.getInstance();
+		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
+		
+		try {
+			while(rs.next()) {
+				Integer watchID = rs.getInt("WatchID");
+				String watchName = rs.getString("WatchName");
+				String watchBrand = rs.getString("WatchBrand");
+				Integer watchPrice = rs.getInt("WatchPrice");
+				Integer watchStock = rs.getInt("Stock");
+				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		init();
 		setLayout();
 		setTable();
-//		refreshTable();
+		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
