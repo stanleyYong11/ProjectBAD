@@ -24,8 +24,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import main.Main;
 
-public class Register extends Application {
+public class Register{
+	
+	private static Register RegisterPage;
+	
 Label regLBL;
 Label nameLBL;
 Label genderLBL;
@@ -64,10 +68,14 @@ backFill,
 backFill1,
 backFill2;
 	
-	public static void main(String[] args) {
-		launch(args);
+
+	public static Register getInstance() {
+		if (RegisterPage == null) {
+			RegisterPage = new Register();
+		}
+		return RegisterPage;
 	}
-	
+
 	public void init() {
 		backg = new Background(backFill);
 		backg1 = new Background(backFill1);
@@ -153,86 +161,85 @@ backFill2;
 			Background backgrnd = new Background(backfills);
 			regBPane.setBackground(backgrnd);
 	}
-		
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	
+	public void registerPage() {
 		init();
 		positions();
 		display();
+
 		regBtn.setOnAction((event) -> {
-		String pass = passPF.getText();
-			System.out.println(pass);
-			int words = emailTF.getText().length();
-			int count = 0;
-		if(words !=0) {
-		for(int i = 0; i < words; i++){
-			if(emailTF.getText().charAt(i) == '@') {
-				count++;
-	};
+			String pass = passPF.getText();
+				System.out.println(pass);
+				int words = emailTF.getText().length();
+				int count = 0;
+			if(words !=0) {
+			for(int i = 0; i < words; i++){
+				if(emailTF.getText().charAt(i) == '@') {
+					count++;
+		};
+			}
 		}
-	}
-		////Name length must be between 5 - 40 characters.
-		if (nameTF.getText().length() < 5 || nameTF.getText().length() > 40) {
-		Alert nameFill = new Alert(AlertType.ERROR);
-			nameFill.setHeaderText("Name Error!");
-			nameFill.setContentText("Your name must be between 5-40 Characters!");
-			nameFill.show();
-	}
-		//		Gender must be chosen, either “Male” or “Female”.
-		else if(!maleRB.isSelected() && !femaleRB.isSelected()) {
-		Alert selectgender = new Alert(AlertType.ERROR);
-			selectgender.setHeaderText("Gender Error!");
-			selectgender.setContentText("Choose a gender");
-			selectgender.show();
+			////Name length must be between 5 - 40 characters.
+			if (nameTF.getText().length() < 5 || nameTF.getText().length() > 40) {
+			Alert nameFill = new Alert(AlertType.ERROR);
+				nameFill.setHeaderText("Name Error!");
+				nameFill.setContentText("Your name must be between 5-40 Characters!");
+				nameFill.show();
 		}
-		//Character ‘@’ must not be next to ‘.’.
-		else if(emailTF.getText().contains("@.")) {
-		Alert namaemail = new Alert(AlertType.ERROR);
-			namaemail.setHeaderText("Email Error!");
-			namaemail.setContentText("Character '@' must not be next to" );
-			namaemail.show();
-		}
-		//Must not starts and ends with ‘@’ nor ‘.’.
-		else if (emailTF.getText().startsWith("@") || emailTF.getText().endsWith("@")) {
-		Alert namaemail = new Alert(AlertType.ERROR);
-			namaemail.setHeaderText("Email Error!");
-			namaemail.setContentText("Email must not starts and ends with '@'");
-			namaemail.show();
-		}else if (emailTF.getText().startsWith(".") || emailTF.getText().endsWith(".")) {
-		Alert namaemail = new Alert(AlertType.ERROR);
-			namaemail.setHeaderText("Email Error!");
-			namaemail.setContentText("Email must not starts and ends with '.'");
-			namaemail.show();
-		}
-//		Must contain exactly one ‘@’.
-		else if(count != 1) {
-		Alert namaemail = new Alert(AlertType.ERROR);
-			namaemail.setHeaderText("Email Error!");
-			namaemail.setContentText("Email must contain exactly 1 '@'");
-			namaemail.show(); 
-		}
+			//		Gender must be chosen, either “Male” or “Female”.
+			else if(!maleRB.isSelected() && !femaleRB.isSelected()) {
+			Alert selectgender = new Alert(AlertType.ERROR);
+				selectgender.setHeaderText("Gender Error!");
+				selectgender.setContentText("Choose a gender");
+				selectgender.show();
+			}
+			//Character ‘@’ must not be next to ‘.’.
+			else if(emailTF.getText().contains("@.")) {
+			Alert namaemail = new Alert(AlertType.ERROR);
+				namaemail.setHeaderText("Email Error!");
+				namaemail.setContentText("Character '@' must not be next to" );
+				namaemail.show();
+			}
+			//Must not starts and ends with ‘@’ nor ‘.’.
+			else if (emailTF.getText().startsWith("@") || emailTF.getText().endsWith("@")) {
+			Alert namaemail = new Alert(AlertType.ERROR);
+				namaemail.setHeaderText("Email Error!");
+				namaemail.setContentText("Email must not starts and ends with '@'");
+				namaemail.show();
+			}else if (emailTF.getText().startsWith(".") || emailTF.getText().endsWith(".")) {
+			Alert namaemail = new Alert(AlertType.ERROR);
+				namaemail.setHeaderText("Email Error!");
+				namaemail.setContentText("Email must not starts and ends with '.'");
+				namaemail.show();
+			}
+//			Must contain exactly one ‘@’.
+			else if(count != 1) {
+			Alert namaemail = new Alert(AlertType.ERROR);
+				namaemail.setHeaderText("Email Error!");
+				namaemail.setContentText("Email must contain exactly 1 '@'");
+				namaemail.show(); 
+			}
+			
+			//Must ends with ‘.com’
+			else if (!emailTF.getText().endsWith(".com")) {
+			Alert com = new Alert(AlertType.ERROR);
+				com.setHeaderText("Email Error!");
+				com.setContentText("Email must end with '.com'!");
+				com.show();
+			
+			}else if(passPF.getText().length() < 6 || passPF.getText().length() > 20 ) {
+				Alert passcount = new Alert(AlertType.ERROR);
+				passcount.setHeaderText("Password Error!");
+				passcount.setContentText("Your password's Length must be between 6 - 20 Characters!");
+				passcount.show();
+			}else if(!coPassPF.getText().equals(coPassPF.getText())) {
+				Alert passMiss = new Alert(AlertType.ERROR);
+				passMiss.setHeaderText("Password Error!");
+				passMiss.setContentText("The confirmation password must be same with inputed password!");
+				passMiss.show();
+			}
+			});
 		
-		//Must ends with ‘.com’
-		else if (!emailTF.getText().endsWith(".com")) {
-		Alert com = new Alert(AlertType.ERROR);
-			com.setHeaderText("Email Error!");
-			com.setContentText("Email must end with '.com'!");
-			com.show();
-		
-		}else if(passPF.getText().length() < 6 || passPF.getText().length() > 20 ) {
-			Alert passcount = new Alert(AlertType.ERROR);
-			passcount.setHeaderText("Password Error!");
-			passcount.setContentText("Your password's Length must be between 6 - 20 Characters!");
-			passcount.show();
-		}else if(!coPassPF.getText().equals(coPassPF.getText())) {
-			Alert passMiss = new Alert(AlertType.ERROR);
-			passMiss.setHeaderText("Password Error!");
-			passMiss.setContentText("The confirmation password must be same with inputed password!");
-			passMiss.show();
-		}
-		});
-			primaryStage.setScene(scenes);
-			primaryStage.setTitle("Register");
-			primaryStage.show();
+		Main.changeScene(scenes, "Register");
 	}
 }

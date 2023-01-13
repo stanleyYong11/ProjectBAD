@@ -9,9 +9,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import main.Main;
 
-public class Admin extends Application{
+public class Admin{
 
+	private static Admin AdminPage;
+	
 	Label userlb;
 	Label transactionlb;
 	
@@ -27,8 +30,11 @@ public class Admin extends Application{
 	
 	Scene sc;
 	
-	public static void main(String[] args) {
-		launch(args);
+	public static Admin getInstance() {
+		if (AdminPage == null) {
+			AdminPage = new Admin();
+		}
+		return AdminPage;
 	}
 	
 	public void init() {
@@ -57,15 +63,10 @@ public class Admin extends Application{
 		
 	}
 	
-	
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+	public void adminPage() {
 		init();
-		primaryStage.setScene(sc);
-		primaryStage.setTitle("Main Page");
-		primaryStage.show();
+		
+		Main.changeScene(sc, "Admin");
 	}
 
 }

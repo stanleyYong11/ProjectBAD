@@ -9,9 +9,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import main.Main;
 
-public class CustomerMenu extends Application{
+public class CustomerMenu{
 
+	private static CustomerMenu CustomerPage;
+	
 	Label userlb;
 	Label transactionlb;
 	
@@ -27,8 +30,11 @@ public class CustomerMenu extends Application{
 	
 	Scene sc;
 	
-	public static void main(String[] args) {
-		launch(args);
+	public static CustomerMenu getInstance() {
+		if (CustomerPage == null) {
+			CustomerPage = new CustomerMenu();
+		}
+		return CustomerPage;
 	}
 	
 	public void init() {
@@ -57,17 +63,10 @@ public class CustomerMenu extends Application{
 		sc = new Scene(bpcust, 900, 1000);
 	}
 	
-	
-
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+	public void customerMenuPage() {
 		init();
-
-		primaryStage.setScene(sc);
-		primaryStage.setTitle("Main Page");
-		primaryStage.show();
+		
+		Main.changeScene(sc, "Customer Page");
 	}
 
 }

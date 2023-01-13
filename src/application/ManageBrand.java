@@ -28,6 +28,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 
 public class ManageBrand extends Application{
@@ -47,6 +49,8 @@ public class ManageBrand extends Application{
 	GridPane gpmanage;
 	GridPane gpmanage2;
 	BorderPane bpmanage;
+	
+	Window window;
 	
 	int BrandID;
 	
@@ -125,6 +129,10 @@ public class ManageBrand extends Application{
 		
 		bpmanage.setCenter(gpmanage);
 		bpmanage.setBottom(gpmanage2);
+		
+		window = new Window("Manage Brand");
+		window.getRightIcons().add(new CloseIcon(window));
+		window.getContentPane().getChildren().add(bpmanage);
 	}
 
 	public void setEvent() {
@@ -198,22 +206,12 @@ public class ManageBrand extends Application{
 		
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+	public Window getWindow() {
 		init();
 		table();
 		refreshTable();
 		setEvent();
-		primaryStage.setScene(sc);
-		primaryStage.setTitle("Manage Brand");
-		primaryStage.setResizable(false);
-		primaryStage.show();
-		
+		return window;
 	}
 }
 
