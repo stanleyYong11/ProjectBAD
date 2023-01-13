@@ -63,6 +63,8 @@ public class BuyProductForms extends Application{
 		bp2 = new BorderPane();
 		gp2 = new GridPane();
 		
+		bp3 = new BorderPane();
+		
 		watchTable = new TableView<>();
 		watchTable.setMaxHeight(250);
 		watchList = new ArrayList<>();
@@ -97,12 +99,12 @@ public class BuyProductForms extends Application{
 		fp.getChildren().add(clearBtn);
 		fp.getChildren().add(checkoutBtn);
 		
-		bp2.setCenter(cartTable);
+		bp3.setCenter(cartTable);
 		
 		bp.setTop(watchTable);
 		bp.setCenter(gp);
 		bp.setCenter(gp2);
-		bp.setBottom(cartTable);
+		bp.setBottom(bp3);
 		bp.setBottom(fp);
 	}
 	
