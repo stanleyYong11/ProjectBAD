@@ -169,10 +169,10 @@ public class BuyProductForms extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		init();
-		setLayout();
-		setTable();
-		refreshTable();
+//		init();
+//		setLayout();
+//		setTable();
+//		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
