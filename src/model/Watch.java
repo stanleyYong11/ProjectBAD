@@ -2,18 +2,17 @@ package model;
 
 public class Watch {
 	private int WatchID;
-	private int BrandID;
 	private String WatchName;
+	private int BrandID;
 	private int WatchPrice;
 	private int WatchStock;
 	
-	public Watch(int watchID, int brandID, String watchName, int watchPrice, int watchStock) {
-		super();
-		WatchID = watchID;
-		BrandID = brandID;
-		WatchName = watchName;
-		WatchPrice = watchPrice;
-		WatchStock = watchStock;
+	public Watch(int watchID, String watchName, int brandID, int watchPrice, int watchStock) {
+		this.WatchID = watchID;
+		this.WatchName = watchName;
+		this.BrandID = brandID;
+		this.WatchPrice = watchPrice;
+		this.WatchStock = watchStock;
 	}
 
 	public int getWatchID() {
@@ -21,7 +20,7 @@ public class Watch {
 	}
 
 	public void setWatchID(int watchID) {
-		WatchID = watchID;
+		this.WatchID = watchID;
 	}
 
 	public int getBrandID() {
@@ -29,7 +28,7 @@ public class Watch {
 	}
 
 	public void setBrandID(int brandID) {
-		BrandID = brandID;
+		this.BrandID = brandID;
 	}
 
 	public String getWatchName() {
@@ -37,7 +36,7 @@ public class Watch {
 	}
 
 	public void setWatchName(String watchName) {
-		WatchName = watchName;
+		this.WatchName = watchName;
 	}
 
 	public int getWatchPrice() {
@@ -45,7 +44,7 @@ public class Watch {
 	}
 
 	public void setWatchPrice(int watchPrice) {
-		WatchPrice = watchPrice;
+		this.WatchPrice = watchPrice;
 	}
 
 	public int getWatchStock() {
@@ -53,6 +52,6 @@ public class Watch {
 	}
 
 	public void setWatchStock(int watchStock) {
-		WatchStock = watchStock;
+		this.WatchStock = watchStock;
 	}
 }

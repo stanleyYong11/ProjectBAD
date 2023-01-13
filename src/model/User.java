@@ -10,49 +10,49 @@ public class User {
 	
 	public User(int userID, String userName, String userEmail, String userPassword, String userGender,
 			String userRole) {
-		UserID = userID;
-		UserName = userName;
-		UserEmail = userEmail;
-		UserPassword = userPassword;
-		UserGender = userGender;
-		UserRole = userRole;
+		this.UserID = userID;
+		this.UserName = userName;
+		this.UserEmail = userEmail;
+		this.UserPassword = userPassword;
+		this.UserGender = userGender;
+		this.UserRole = userRole;
 	}
 	
 	public int getUserID() {
 		return UserID;
 	}
 	public void setUserID(int userID) {
-		UserID = userID;
+		this.UserID = userID;
 	}
 	public String getUserName() {
 		return UserName;
 	}
 	public void setUserName(String userName) {
-		UserName = userName;
+		this.UserName = userName;
 	}
 	public String getUserEmail() {
 		return UserEmail;
 	}
 	public void setUserEmail(String userEmail) {
-		UserEmail = userEmail;
+		this.UserEmail = userEmail;
 	}
 	public String getUserPassword() {
 		return UserPassword;
 	}
 	public void setUserPassword(String userPassword) {
-		UserPassword = userPassword;
+		this.UserPassword = userPassword;
 	}
 	public String getUserGender() {
 		return UserGender;
 	}
 	public void setUserGender(String userGender) {
-		UserGender = userGender;
+		this.UserGender = userGender;
 	}
 	public String getUserRole() {
 		return UserRole;
 	}
 	public void setUserRole(String userRole) {
-		UserRole = userRole;
+		this.UserRole = userRole;
 	}
 	
 	

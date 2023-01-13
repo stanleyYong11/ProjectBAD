@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,32 +20,25 @@ import model.Watch;
 
 public class BuyProductForms extends Application{
 	
-	Label 
-	selectWatchLbl, 
-	quantityLbl,
-	watchNameLbl;
-	Button 
-	addWatchToCartBtn, 
-	clearCartBtn, 
-	checkOutBtn;
-	Spinner<Integer> 
-	quantitySp;
-	TableView<Watch> 
-	watchTable, 
-	cartTable;
+	Label quantityLbl;
+	Label selectWatchLbl;
+	Label watchNameLbl;
+	Button addWatchToCartBtn;
+	Button clearCartBtn; 
+	Button checkOutBtn;
+	Spinner<Integer> quantitySp;
+	TableView<Watch> watchTable;
+	TableView<Watch> cartTable;
 	
-	Scene 
-	scene;
-	BorderPane 
-	bPanes, 
-	bPanequantity;
-	GridPane 
-	gPane;
-	FlowPane 
-	bottomBtn;
+	Scene scene;
+	BorderPane bp1; 
+	BorderPane bp2;
+	GridPane gPane;
+	FlowPane bottomBtn;
 
 	public void setTableWatch() {
 		watchTable = new TableView<>();
+		watchTable.setMaxHeight(200);
 		TableColumn<Watch, String> column1 = new TableColumn<Watch, String>("Watch ID");
 		TableColumn<Watch, String> column2 = new TableColumn<Watch, String>("Watch Name");
 		TableColumn<Watch, String> column3 = new TableColumn<Watch, String>("Watch Brand");
@@ -59,7 +53,7 @@ public class BuyProductForms extends Application{
 		
 		//add ke table pakai colom
 		watchTable.getColumns().addAll(column1, column2, column3, column4, column5);
-		bPanes.setTop(watchTable);
+		bp1.setTop(watchTable);
 	}
 	
 	public void setTableCart() {
@@ -67,33 +61,35 @@ public class BuyProductForms extends Application{
 	}
 	
 	public void init() {
-		bPanes = new BorderPane();
-		bPanequantity = new BorderPane();
+		bp1 = new BorderPane();
+		bp2 = new BorderPane();
 		gPane = new GridPane();
 		bottomBtn = new FlowPane();
 		
-//		watch namenya nanti ganti ke get text
-		watchNameLbl = new Label("Submariner 300 Watch");
+		watchNameLbl = new Label("None");
+		watchNameLbl.setPadding(new Insets(10,10,10,10));
 		
 		selectWatchLbl = new Label("Selected Watch: " + watchNameLbl.getText());
-		bPanequantity.setTop(selectWatchLbl);
+		selectWatchLbl.setPadding(new Insets(10,10,10,10));
+		bp2.setTop(selectWatchLbl);
 		selectWatchLbl.setAlignment(Pos.TOP_LEFT);
 		
 		quantityLbl = new Label("Quantity: ");
-		bPanequantity.setCenter(quantityLbl);
+		bp2.setCenter(quantityLbl);
 		gPane.add(quantityLbl, 0, 0);
+		quantityLbl.setAlignment(Pos.TOP_CENTER);
 		
-		quantitySp = new Spinner<>(0, 100, 0, 1);
-		bPanequantity.setCenter(quantitySp);
+		quantitySp = new Spinner<>();
+		bp2.setCenter(quantitySp);
 		gPane.add(quantitySp, 1, 0);
 		
 		addWatchToCartBtn = new Button("Add Watch To Cart");
-		bPanequantity.setCenter(addWatchToCartBtn);
+		bp2.setCenter(addWatchToCartBtn);
 		gPane.add(addWatchToCartBtn, 2, 0);
 		
 		gPane.setHgap(10);
 		gPane.setAlignment(Pos.CENTER);
-		bPanequantity.setCenter(gPane);
+		bp2.setCenter(gPane);
 		
 		clearCartBtn = new Button("Clear Cart");
 		bottomBtn.getChildren().add(clearCartBtn);
@@ -103,12 +99,12 @@ public class BuyProductForms extends Application{
 		
 		bottomBtn.setHgap(15);
 		
-		bPanes.setCenter(bPanequantity);
+		bp1.setCenter(bp2);
 
-		bPanes.setBottom(bottomBtn);
+		bp1.setBottom(bottomBtn);
 		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
 		
-		scene = new Scene(bPanes, 600, 600);
+		scene = new Scene(bp1, 600, 600);
 	}
 	
 	public static void main(String[] args) {

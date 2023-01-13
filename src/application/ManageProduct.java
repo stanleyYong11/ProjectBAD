@@ -33,7 +33,6 @@ public class ManageProduct extends Application{
 	FlowPane fp;
 	TableView<Watch> watchTable;
 	ArrayList<Watch> watchList;
-	ArrayList<Brand> brandList;
 	Label watchNameLbl;
 	TextField watchNameTF;
 	Label watchPriceLbl;
@@ -104,7 +103,7 @@ public class ManageProduct extends Application{
 		watchID.setMinWidth(40);
 		TableColumn<Watch, String> watchName = new TableColumn<Watch, String>("Watch Name");
 		watchName.setMinWidth(300);
-		TableColumn<Watch, String> watchBrand = new TableColumn<Watch, String>("Watch Brand");
+		TableColumn<Watch, Integer> watchBrand = new TableColumn<Watch, Integer>("Brand ID");
 		watchBrand.setMinWidth(110);
 		TableColumn<Watch, Integer> watchPrice = new TableColumn<Watch, Integer>("Watch Price");
 		watchPrice.setMinWidth(110);
@@ -113,7 +112,7 @@ public class ManageProduct extends Application{
 		
 		watchID.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
 		watchName.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
-		watchBrand.setCellValueFactory(new PropertyValueFactory<Watch, String>("BrandName"));
+		watchBrand.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("BrandID"));
 		watchPrice.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		watchStock.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
@@ -130,7 +129,7 @@ public class ManageProduct extends Application{
 	}
 	
 	public void getWatch(){
-		getBrand();
+//		getBrand();
 		
 		DBConnect dbConnect = DBConnect.getInstance();
 		ResultSet rs = null;
@@ -139,43 +138,44 @@ public class ManageProduct extends Application{
 		try {
 			while(rs.next()) {
 				int WatchID = rs.getInt("WatchID");
-				String WatchBrand = rs.getString("BrandName");
+				int WatchBrand = rs.getInt("BrandID");
 				String WatchName = rs.getString("WatchName");
 				int WatchPrice = rs.getInt("WatchPrice");
 				int WatchStock = rs.getInt("WatchStock");
 				
-				watchList.add(new Watch(WatchID, WatchBrand, WatchName, WatchPrice, WatchStock));
+				watchList.add(new Watch(WatchID, BrandID, WatchName, WatchPrice, WatchStock));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void getBrand() {
-		brandList = new ArrayList<>();
-		
-		DBConnect dbConnect = DBConnect.getInstance();
-		ResultSet rs = null;
-		rs = dbConnect.executeQuery("SELECT * FROM `brand`");
-		
-		try {
-			while(rs.next()) {
-				int BrandID = rs.getInt("BrandID");
-				String BrandName = rs.getString("BrandName");
-				
-				Brand brand = new Brand(BrandID, BrandName);
-				brandList.add(brand);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public void getBrand() {
+//		brandList = new ArrayList<>();
+//		
+//		DBConnect dbConnect = DBConnect.getInstance();
+//		ResultSet rs = null;
+//		rs = dbConnect.executeQuery("SELECT * FROM `brand`");
+//		
+//		try {
+//			while(rs.next()) {
+//				int BrandID = rs.getInt("BrandID");
+//				String BrandName = rs.getString("BrandName");
+//				
+//				Brand brand = new Brand(BrandID, BrandName);
+//				brandList.add(brand);
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		init();
 		table();
+		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
