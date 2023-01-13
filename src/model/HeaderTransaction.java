@@ -1,15 +1,17 @@
 package model;
 
+import java.sql.Date;
+
 public class HeaderTransaction {
 	private int TransactionID;
 	private int UserID;
-	private String transactionDate;
+	private Date TransactionDate;
 	
-	public HeaderTransaction(int transactionID, int userID, String transactionDate) {
+	public HeaderTransaction(int transactionID, int userID, Date transactionDate) {
 		super();
-		TransactionID = transactionID;
-		UserID = userID;
-		this.transactionDate = transactionDate;
+		this.TransactionID = transactionID;
+		this.UserID = userID;
+		this.TransactionDate = transactionDate;
 	}
 
 	public int getTransactionID() {
@@ -17,7 +19,7 @@ public class HeaderTransaction {
 	}
 
 	public void setTransactionID(int transactionID) {
-		TransactionID = transactionID;
+		this.TransactionID = transactionID;
 	}
 
 	public int getUserID() {
@@ -25,15 +27,15 @@ public class HeaderTransaction {
 	}
 
 	public void setUserID(int userID) {
-		UserID = userID;
+		this.UserID = userID;
 	}
 
-	public String getTransactionDate() {
-		return transactionDate;
+	public Date getTransactionDate() {
+		return TransactionDate;
 	}
 
-	public void setTransactionDate(String transactionDate) {
-		this.transactionDate = transactionDate;
+	public void setTransactionDate(Date transactionDate) {
+		this.TransactionDate = transactionDate;
 	}
 	
 }

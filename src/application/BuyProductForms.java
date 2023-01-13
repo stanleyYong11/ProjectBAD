@@ -96,16 +96,25 @@ public class BuyProductForms extends Application{
 		gp2.add(addBtn, 1, 2);
 		gp2.setAlignment(Pos.CENTER);
 		
+		bp2.setTop(gp);
+		bp2.setBottom(gp2);
+		bp2.setAlignment(gp, Pos.TOP_LEFT);
+		bp2.setAlignment(gp2, Pos.BOTTOM_CENTER);
+		
 		fp.getChildren().add(clearBtn);
 		fp.getChildren().add(checkoutBtn);
+		fp.setHgap(10);
+		fp.setVgap(10);
+		fp.setPadding(new Insets(10, 10, 10, 10));
 		
-		bp3.setCenter(cartTable);
+		bp3.setBottom(fp);
 		
 		bp.setTop(watchTable);
-		bp.setCenter(gp);
-		bp.setCenter(gp2);
+		bp.setCenter(bp2);
 		bp.setBottom(bp3);
-		bp.setBottom(fp);
+		bp.setBottom(addBtn);
+		
+		bp.setAlignment(addBtn, Pos.BOTTOM_CENTER);
 	}
 	
 	@SuppressWarnings("unchecked")
