@@ -53,7 +53,7 @@ public class Admin extends Application{
 		bpadmin = new BorderPane();
 		bpadmin.setTop(baradmin);
 		
-		sc = new Scene(bpadmin, 900, 1000);
+		sc = new Scene(bpadmin, 1000, 700);
 		
 	}
 	
