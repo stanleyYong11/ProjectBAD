@@ -1,6 +1,15 @@
 package application;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.security.auth.Refreshable;
+
+import connect.DBConnect;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,105 +29,112 @@ import model.Watch;
 
 public class BuyProductForms extends Application{
 	
-	Label quantityLbl;
-	Label selectWatchLbl;
-	Label watchNameLbl;
-	Button addWatchToCartBtn;
-	Button clearCartBtn; 
-	Button checkOutBtn;
-	Spinner<Integer> quantitySp;
-	TableView<Watch> watchTable;
-	TableView<Watch> cartTable;
-	
 	Scene scene;
-	BorderPane bp1; 
-	BorderPane bp2;
-	GridPane gPane;
-	FlowPane bottomBtn;
-
-	public void setTableWatch() {
-		watchTable = new TableView<>();
-		watchTable.setMaxHeight(200);
-		TableColumn<Watch, String> column1 = new TableColumn<Watch, String>("Watch ID");
-		TableColumn<Watch, String> column2 = new TableColumn<Watch, String>("Watch Name");
-		TableColumn<Watch, String> column3 = new TableColumn<Watch, String>("Watch Brand");
-		TableColumn<Watch, Integer> column4 = new TableColumn<Watch, Integer>("Watch Price");
-		TableColumn<Watch, Integer> column5 = new TableColumn<Watch, Integer>("Watch Stock");
-		
-		column1.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchID"));
-		column2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
-		column3.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchBrand"));
-		column4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
-		column5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
-		
-		//add ke table pakai colom
-		watchTable.getColumns().addAll(column1, column2, column3, column4, column5);
-		bp1.setTop(watchTable);
-	}
+	BorderPane bp;
+	GridPane gp;
 	
-	public void setTableCart() {
-		cartTable = new TableView<>();
-	}
+	BorderPane bp2;
+	GridPane gp2;
+	
+	TableView<Watch> watchTable;
+	ArrayList<Watch> watchList;
+	
+	Label select;
+	Label selectValue;
+	
+	Label qty;
+	Spinner<Integer> qtySP;
+	Button addBtn;
 	
 	public void init() {
-		bp1 = new BorderPane();
+		bp = new BorderPane();
+		gp = new GridPane();
+		
 		bp2 = new BorderPane();
-		gPane = new GridPane();
-		bottomBtn = new FlowPane();
+		gp2 = new GridPane();
 		
-		watchNameLbl = new Label("None");
-		watchNameLbl.setPadding(new Insets(10,10,10,10));
+		watchTable = new TableView<>();
+		watchTable.setMaxHeight(250);
+		watchList = new ArrayList<>();
 		
-		selectWatchLbl = new Label("Selected Watch: " + watchNameLbl.getText());
-		selectWatchLbl.setPadding(new Insets(10,10,10,10));
-		bp2.setTop(selectWatchLbl);
-		selectWatchLbl.setAlignment(Pos.TOP_LEFT);
+		select = new Label("Selected Watch: ");
+		selectValue = new Label("None");
 		
-		quantityLbl = new Label("Quantity: ");
-		bp2.setCenter(quantityLbl);
-		gPane.add(quantityLbl, 0, 0);
-		quantityLbl.setAlignment(Pos.TOP_CENTER);
+		qty = new Label("Quantity: ");
+		qtySP = new Spinner<>();
+		addBtn = new Button("Add Watch To Cart");
 		
-		quantitySp = new Spinner<>();
-		bp2.setCenter(quantitySp);
-		gPane.add(quantitySp, 1, 0);
+		scene = new Scene(bp, 1000, 700);
+	}
+	
+	public void setLayout() {
+		gp.add(select, 0, 0);
+		gp.add(selectValue, 1, 0);
+		gp.setAlignment(Pos.TOP_LEFT);
+		gp.setPadding(new Insets(10, 10, 10, 10));
 		
-		addWatchToCartBtn = new Button("Add Watch To Cart");
-		bp2.setCenter(addWatchToCartBtn);
-		gPane.add(addWatchToCartBtn, 2, 0);
+		gp2.add(qty, 1, 0);
+		gp2.add(qtySP, 1, 1);
+		gp2.add(addBtn, 1, 2);
+		gp2.setAlignment(Pos.CENTER);
 		
-		gPane.setHgap(10);
-		gPane.setAlignment(Pos.CENTER);
-		bp2.setCenter(gPane);
+		bp.setTop(watchTable);
+		bp.setCenter(gp);
+		bp.set(gp2);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setTable() {
+		TableColumn<Watch, Integer> watchIDColumn = new TableColumn<Watch, Integer>("Watch ID");
+		TableColumn<Watch, String> watchNameColumn = new TableColumn<Watch, String>("Watch Name");
+		TableColumn<Watch, String> watchBrandColumn = new TableColumn<Watch, String>("Watch Brand");
+		TableColumn<Watch, Integer> watchPriceColumn = new TableColumn<Watch, Integer>("Watch Price");
 		
-		clearCartBtn = new Button("Clear Cart");
-		bottomBtn.getChildren().add(clearCartBtn);
+		watchIDColumn.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
+		watchNameColumn.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
+		watchBrandColumn.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchBrand"));
+		watchPriceColumn.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		
-		checkOutBtn = new Button("Checkout");
-		bottomBtn.getChildren().add(checkOutBtn);
+		watchTable.getColumns().addAll(watchIDColumn, watchNameColumn, watchBrandColumn, watchPriceColumn);
+	}
+	
+	public void refreshTable() {
+		watchList.clear();
+		getWatch();
+		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchList);
+		watchTable.setItems(watchObs);
+	}
+	
+	public void getWatch() {
+		DBConnect dbConnect = DBConnect.getInstance();
+		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
 		
-		bottomBtn.setHgap(15);
-		
-		bp1.setCenter(bp2);
-
-		bp1.setBottom(bottomBtn);
-		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
-		
-		scene = new Scene(bp1, 600, 600);
+		try {
+			while(rs.next()) {
+				Integer watchID = rs.getInt("WatchID");
+				String watchName = rs.getString("WatchName");
+				String watchBrand = rs.getString("WatchBrand");
+				Integer watchPrice = rs.getInt("WatchPrice");
+				watchList.add(new Watch(watchID, watchName, watchBrand, watchPrice));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		init();
+		setLayout();
+		setTable();
+		refreshTable();
+		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
+		primaryStage.show();
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		init();
-		setTableWatch();
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		
 	}
 
 }
