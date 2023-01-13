@@ -96,16 +96,20 @@ public class BuyProductForms extends Application{
 		gp2.add(addBtn, 1, 2);
 		gp2.setAlignment(Pos.CENTER);
 		
+		bp2.setTop(gp);
+		bp2.setBottom(gp2);
+		bp2.setAlignment(gp, Pos.TOP_LEFT);
+		bp2.setAlignment(gp2, Pos.BOTTOM_CENTER);
+		
 		fp.getChildren().add(clearBtn);
 		fp.getChildren().add(checkoutBtn);
 		
-		bp3.setCenter(cartTable);
+		bp3.setTop(cartTable);
+		bp3.setBottom(fp);
 		
 		bp.setTop(watchTable);
-		bp.setCenter(gp);
-		bp.setCenter(gp2);
+		bp.setCenter(bp2);
 		bp.setBottom(bp3);
-		bp.setBottom(fp);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -160,10 +164,10 @@ public class BuyProductForms extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		init();
-		setLayout();
-		setTable();
-		refreshTable();
+//		init();
+//		setLayout();
+//		setTable();
+//		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
