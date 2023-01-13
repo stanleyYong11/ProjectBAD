@@ -21,7 +21,7 @@ import model.WrapperView;
 public class ViewTransactionHistory extends Application{
 	
 	Scene scene;
-	BorderPane bpane, bpaneLabel;
+	BorderPane bpane, bpaneLabel, bpaneHeader, bpaneDetail;
 	GridPane gpane;
 	Label selectedTransaction, transactionName;
 	TableView<HeaderTransaction> transactionHeader;
@@ -43,10 +43,10 @@ public class ViewTransactionHistory extends Application{
 		transactDate.setPrefWidth(500);
 		
 		transactionHeader.getColumns().addAll(transactID, userID, transactDate);
-		bpane.setTop(transactionHeader);
+		bpaneHeader.setCenter(transactionHeader);
 		
 		transactionHeader.setPrefHeight(300);
-		transactionHeader.setPrefWidth(600);
+		transactionHeader.setPrefWidth(300);
 	}
 	
 	private void setViewDetail() {
@@ -72,22 +72,25 @@ public class ViewTransactionHistory extends Application{
 		watchID.setPrefWidth(100);
 		watchName.setPrefWidth(200);
 		watchBrand.setPrefWidth(200);
-		watchPrice.setPrefWidth(100);
+		watchPrice.setPrefWidth(150);
 		quantity.setPrefWidth(100);
-		subTotal.setPrefWidth(100);
+		subTotal.setPrefWidth(150);
 		
 		
 		transactionDetail.getColumns().addAll(transactID, watchID, watchName, watchBrand, watchPrice, quantity, subTotal);
-		bpane.setBottom(transactionDetail);
+		bpaneDetail.setCenter(transactionDetail);
+		transactionDetail.autosize();
 		
 		transactionDetail.setPrefHeight(300);
-		transactionDetail.setPrefWidth(600);
+		transactionDetail.setPrefWidth(300);
 	}
 	
 	private void initialize() {
 		// TODO Auto-generated method stub
 		bpane = new BorderPane();
 		bpaneLabel = new BorderPane();
+		bpaneHeader = new BorderPane();
+		bpaneDetail = new BorderPane();
 		gpane = new GridPane();
 		selectedTransaction = new Label("Selected Transaction: None");
 		
@@ -97,7 +100,12 @@ public class ViewTransactionHistory extends Application{
 		bpaneLabel.setAlignment(selectedTransaction, Pos.BOTTOM_LEFT);
 		bpaneLabel.setMinHeight(15);
 		
+		bpaneHeader.setMinWidth(300);
+		bpaneDetail.setMinWidth(300);
+		
+		bpane.setTop(bpaneHeader);
 		bpane.setCenter(bpaneLabel);
+		bpane.setBottom(bpaneDetail);
 		
 		BackgroundFill backfills = new BackgroundFill(Color.TURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
 		Background backgrnd = new Background(backfills);
