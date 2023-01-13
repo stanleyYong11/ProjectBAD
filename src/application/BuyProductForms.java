@@ -25,7 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import model.Watch;
+import model.WrapperWatch;
 
 public class BuyProductForms extends Application{
 	
@@ -36,8 +36,8 @@ public class BuyProductForms extends Application{
 	BorderPane bp2;
 	GridPane gp2;
 	
-	TableView<Watch> watchTable;
-	ArrayList<Watch> watchList;
+	TableView<WrapperWatch> watchTable;
+	ArrayList<WrapperWatch> watchList;
 	
 	Label select;
 	Label selectValue;
@@ -80,54 +80,55 @@ public class BuyProductForms extends Application{
 		
 		bp.setTop(watchTable);
 		bp.setCenter(gp);
-		bp.set(gp2);
+		bp.setCenter(gp2);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void setTable() {
-		TableColumn<Watch, Integer> watchIDColumn = new TableColumn<Watch, Integer>("Watch ID");
-		TableColumn<Watch, String> watchNameColumn = new TableColumn<Watch, String>("Watch Name");
-		TableColumn<Watch, String> watchBrandColumn = new TableColumn<Watch, String>("Watch Brand");
-		TableColumn<Watch, Integer> watchPriceColumn = new TableColumn<Watch, Integer>("Watch Price");
+		TableColumn<WrapperWatch, Integer> watchIDColumn = new TableColumn<WrapperWatch, Integer>("Watch ID");
+		TableColumn<WrapperWatch, String> watchNameColumn = new TableColumn<WrapperWatch, String>("Watch Name");
+		TableColumn<WrapperWatch, String> watchBrandColumn = new TableColumn<WrapperWatch, String>("Watch Brand");
+		TableColumn<WrapperWatch, Integer> watchPriceColumn = new TableColumn<WrapperWatch, Integer>("Watch Price");
 		
-		watchIDColumn.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
-		watchNameColumn.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
-		watchBrandColumn.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchBrand"));
-		watchPriceColumn.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
+		watchIDColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, Integer>("WatchID"));
+		watchNameColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, String>("WatchName"));
+		watchBrandColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, String>("WatchBrand"));
+		watchPriceColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, Integer>("WatchPrice"));
 		
 		watchTable.getColumns().addAll(watchIDColumn, watchNameColumn, watchBrandColumn, watchPriceColumn);
 	}
 	
-	public void refreshTable() {
-		watchList.clear();
-		getWatch();
-		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchList);
-		watchTable.setItems(watchObs);
-	}
+//	public void refreshTable() {
+//		watchList.clear();
+//		getWatch();
+//		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
+//		watchTable.setItems(watchObs);
+//	}
 	
-	public void getWatch() {
-		DBConnect dbConnect = DBConnect.getInstance();
-		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
-		
-		try {
-			while(rs.next()) {
-				Integer watchID = rs.getInt("WatchID");
-				String watchName = rs.getString("WatchName");
-				String watchBrand = rs.getString("WatchBrand");
-				Integer watchPrice = rs.getInt("WatchPrice");
-				watchList.add(new Watch(watchID, watchName, watchBrand, watchPrice));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void getWatch() {
+//		DBConnect dbConnect = DBConnect.getInstance();
+//		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
+//		
+//		try {
+//			while(rs.next()) {
+//				Integer watchID = rs.getInt("WatchID");
+//				String watchName = rs.getString("WatchName");
+//				String watchBrand = rs.getString("WatchBrand");
+//				Integer watchPrice = rs.getInt("WatchPrice");
+//				Integer watchStock = rs.getInt("Stock");
+//				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		init();
 		setLayout();
 		setTable();
-		refreshTable();
+//		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();

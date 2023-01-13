@@ -72,7 +72,5 @@ public class WrapperView extends DetailTransaction{
 		ViewWatchPrice = viewWatchPrice;
 	}
 
-	
-	
 }
  

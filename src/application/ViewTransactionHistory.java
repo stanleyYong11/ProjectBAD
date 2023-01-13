@@ -108,8 +108,8 @@ public class ViewTransactionHistory extends Application{
 		bpane.setBottom(bpaneDetail);
 		
 		BackgroundFill backfills = new BackgroundFill(Color.TURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
-		Background backgrnd = new Background(backfills);
-		bpane.setBackground(backgrnd);
+		Background bg = new Background(backfills);
+		bpane.setBackground(bg);
 
 		
 		scene = new Scene(bpane, 1000, 700);
