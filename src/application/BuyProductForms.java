@@ -103,13 +103,18 @@ public class BuyProductForms extends Application{
 		
 		fp.getChildren().add(clearBtn);
 		fp.getChildren().add(checkoutBtn);
+		fp.setHgap(10);
+		fp.setVgap(10);
+		fp.setPadding(new Insets(10, 10, 10, 10));
 		
-		bp3.setTop(cartTable);
 		bp3.setBottom(fp);
 		
 		bp.setTop(watchTable);
 		bp.setCenter(bp2);
 		bp.setBottom(bp3);
+		bp.setBottom(addBtn);
+		
+		bp.setAlignment(addBtn, Pos.BOTTOM_CENTER);
 	}
 	
 	@SuppressWarnings("unchecked")
