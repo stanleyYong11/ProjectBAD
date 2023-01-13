@@ -10,11 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import jfxtras.labs.scene.control.window.Window;
 
 public class Main extends Application {
 Label titleloginLBL;
@@ -29,19 +34,31 @@ Scene scene;
 VBox MenuLogBtn;
 TextField emailTF;
 PasswordField passPF;
-Window window;
-
+Background 
+backg,
+backg1,
+backg2;
+BackgroundFill
+backFill,
+backFill1,
+backFill2;
 	public static void main(String[]args) {
 		launch(args);
 	}
 	
 	public void init() {
+		
+		backg = new Background(backFill);
+		backg1 = new Background(backFill1);
+		backg2 = new Background(backFill2);
+		backFill1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		backFill2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+		
 		gp = new GridPane();
 		bp = new BorderPane();
-		window = new Window("Main");
-		
 		luarBP = new BorderPane();
 		titleloginLBL = new Label("Watches Dealer Login");
+		titleloginLBL.setFont(Font.font("Verdana",FontWeight.BOLD,14));
 		emailLBL = new Label("Email :");
 		passwordLBL = new Label("Password :");
 		
@@ -49,7 +66,11 @@ Window window;
 		emailTF.setPromptText("Email Address");
 		
 		loginBtn = new Button("Login");
+		loginBtn.setBackground(backg1);
+		loginBtn.setTextFill(Color.WHITE);
 		registerBtn = new Button("Register Instead");
+		registerBtn.setBackground(backg1);
+		registerBtn.setTextFill(Color.WHITE);
 		passPF = new PasswordField();
 		
 		emailTF.setPromptText("Email Address");
@@ -84,11 +105,12 @@ Window window;
 		titleloginLBL.setMinWidth(150);
 		bp.setPadding(new Insets(50,50,50,50));
 		luarBP.setPadding(new Insets(50, 50, 75, 75));
+		scene = new Scene(luarBP,500,500);
 		
-		window.setPrefSize(300, 300);
-		window.getContentPane().getChildren().add(bp);
+		BackgroundFill backfills = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
+		Background backgrnd = new Background(backfills);
+		bp.setBackground(backgrnd);
 		
-		scene = new Scene(window,500,500);
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
