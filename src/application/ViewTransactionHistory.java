@@ -27,11 +27,14 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.Window;
 import model.HeaderTransaction;
 import model.ViewTransaction;
 import model.WrapperView;
 
-public class ViewTransactionHistory extends Application{
+public class ViewTransactionHistory{
+	
+	public static ViewTransactionHistory ViewTransactionHistory;
 	
 	Scene scene;
 	BorderPane bpane, bpaneLabel, bpaneHeader, bpaneDetail;
@@ -41,7 +44,17 @@ public class ViewTransactionHistory extends Application{
 	ArrayList<HeaderTransaction> headerList;
 	TableView<ViewTransaction> detailTable;
 	ArrayList<ViewTransaction> detailList;
+	
+	Window window;
+	
 	DBConnect dbConnect = DBConnect.getInstance();
+	
+	public static ViewTransactionHistory getInstance() {
+		if (ViewTransactionHistory == null) {
+			ViewTransactionHistory = new ViewTransactionHistory();
+		}
+		return ViewTransactionHistory;
+	}
 	
 	@SuppressWarnings("unchecked")
 	private void setViewHeader() {
@@ -70,7 +83,6 @@ public class ViewTransactionHistory extends Application{
 	
 	public void refreshHeaderTable() {
 		headerList.clear();
-		detailList.clear();
 		getHeaderData();
 		ObservableList<HeaderTransaction> headerObs = FXCollections.observableArrayList(headerList);
 		headerTable.setItems(headerObs);
@@ -208,49 +220,50 @@ public class ViewTransactionHistory extends Application{
 				
 				if (headerTransact != null) {
 					transactionName.setText("Transaction " + String.valueOf(headerTransact.getTransactionID()));
-					detailList.clear();
+//					detailList.clear();
 					
-					ResultSet rs = dbConnect.executeQuery("SELECT ht.TransactionID, dt.WatchID,wt.WatchName, br.BrandName, wt.WatchPrice, dt.Quantity, SUM(dt.Quantity * wt.WatchPrice) AS SubTotal FROM headertransaction ht JOIN detailtransaction dt ON ht.TransactionID = dt.TransactionID JOIN watch wt ON dt.WatchID = wt.WatchID JOIN brand br ON wt.BrandID = br.BrandID GROUP BY ht.TransactionID, dt.WatchID, wt.WatchName, br.BrandName, wt.WatchPrice, dt.Quantity;");
-					
-					try {
-						while(rs.next()) {
-							Integer transactionID = rs.getInt("ht.TransactionID");
-							Integer watchID = rs.getInt("dt.WatchID");
-							String watchName = rs.getString("wt.WatchName");
-							String watchBrand = rs.getString("br.BrandName");
-							Integer watchPrice = rs.getInt("wt.WatchPrice");
-							Integer quantity = rs.getInt("dt.Quantity");
-							Integer subTotal = rs.getInt("SUM(dt.Quantity * wt.WatchPrice) AS SubTotal");
-							
-							detailList.add(new ViewTransaction(transactionID, watchID, watchName, watchBrand, watchPrice, quantity, subTotal));
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					ResultSet rs = dbConnect.executeQuery("SELECT ht.TransactionID, dt.WatchID,wt.WatchName, br.BrandName, wt.WatchPrice, dt.Quantity, SUM(dt.Quantity * wt.WatchPrice) AS SubTotal FROM `headertransaction ht` JOIN `detailtransaction dt` ON `ht.TransactionID` = `dt.TransactionID` JOIN `watch wt` ON `dt.WatchID` = `wt.WatchID` JOIN `brand br` ON `wt.BrandID` = `br.BrandID` GROUP BY ht.TransactionID, dt.WatchID, wt.WatchName, br.BrandName, wt.WatchPrice, dt.Quantity;");
+//					
+//					try {
+//						while(rs.next()) {
+//							Integer transactionID = rs.getInt("ht.TransactionID");
+//							Integer watchID = rs.getInt("dt.WatchID");
+//							String watchName = rs.getString("wt.WatchName");
+//							String watchBrand = rs.getString("br.BrandName");
+//							Integer watchPrice = rs.getInt("wt.WatchPrice");
+//							Integer quantity = rs.getInt("dt.Quantity");
+//							Integer subTotal = rs.getInt("SubTotal");
+//							
+//							detailList.add(new ViewTransaction(transactionID, watchID, watchName, watchBrand, watchPrice, quantity, subTotal));
+//						}
+//					} catch (SQLException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//				ObservableList<ViewTransaction> detailObs = FXCollections.observableArrayList(detailList);
+//				detailTable.setItems(detailObs);
+				
+//				if (headerTransact != null) {
+//					transactionName.setText("Transaction " + String.valueOf(headerTransact.getTransactionID()));
+//					
+//					detailList.clear();
+//					
+//					ResultSet rs = dbConnect.executeQuery("SELECT * FROM `detailtransaction` WHERE ");
 				}
-				ObservableList<ViewTransaction> detailObs = FXCollections.observableArrayList(detailList);
-				detailTable.setItems(detailObs);
 			}
 		});
 	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+	public Window getWindow() {
 		initialize();
 		setViewHeader();
 		setViewDetail();
 		refreshHeaderTable();
-//		refreshDetailTable();
 		setEvent();
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		
+		return window;
 	}
-
+	
 }
 

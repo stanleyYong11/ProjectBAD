@@ -132,6 +132,9 @@ public class Login{
 			} else if (emailTF.getText().equals("gavrey@gmail.com")) {
 				CustomerMenu cm = CustomerMenu.getInstance();
 				cm.customerMenuPage();
+			} else if (emailTF.getText().equals("a@b.com")) {
+				Admin cm = Admin.getInstance();
+				cm.adminPage();
 			}
 		});
 		

@@ -30,9 +30,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
+import main.Main;
 import model.Brand;
 
-public class ManageBrand extends Application{
+public class ManageBrand{
+	
+	public static ManageBrand ManageBrand;
 	
 	Button btinsertbrand, btupdatebrand, btdeletebrand;
 	Label lbbrand;
@@ -53,6 +56,13 @@ public class ManageBrand extends Application{
 	Window window;
 	
 	int BrandID;
+	
+	public static ManageBrand getInstance() {
+		if (ManageBrand == null) {
+			ManageBrand = new ManageBrand();
+		}
+		return ManageBrand;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void table() {

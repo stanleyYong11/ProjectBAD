@@ -66,6 +66,17 @@ public class Admin{
 	public void adminPage() {
 		init();
 		
+		itemadmin.setOnAction((event) -> {
+			Login lg = Login.getInstance();
+			lg.loginPage();
+		});
+		
+		itemmanagement1.setOnAction((event) -> {
+			ManageBrand mb = ManageBrand.getInstance();
+			bpadmin.setCenter(mb.getWindow());
+		});
+		
+		
 		Main.changeScene(sc, "Admin");
 	}
 
