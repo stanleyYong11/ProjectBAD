@@ -25,11 +25,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Cart;
 import model.Watch;
 import model.WrapperWatch;
 
-public class BuyProductForms extends Application{
+public class BuyProductForms{
+	
+	public static BuyProductForms BuyProduct;
 	
 	Scene scene;
 	BorderPane bp;
@@ -41,8 +45,8 @@ public class BuyProductForms extends Application{
 	
 	BorderPane bp3;
 	
-	TableView<WrapperWatch> watchTable;
-	ArrayList<WrapperWatch> watchList;
+	TableView<Watch> watchTable;
+	ArrayList<Watch> watchList;
 	
 	 TableView<Cart> cartTable;
 	 ArrayList<Cart> cartList;
@@ -55,6 +59,15 @@ public class BuyProductForms extends Application{
 	Button addBtn;
 	Button clearBtn;
 	Button checkoutBtn;
+	
+	Window window;
+	
+	public static BuyProductForms getInstance() {
+		if (BuyProduct == null) {
+			BuyProduct = new BuyProductForms();
+		}
+		return BuyProduct;
+	}
 	
 	public void init() {
 		bp = new BorderPane();
@@ -83,7 +96,11 @@ public class BuyProductForms extends Application{
 		clearBtn = new Button("Clear Cart");
 		checkoutBtn = new Button("Checkout");
 		
-		scene = new Scene(bp, 1000, 700);
+//		scene = new Scene(bp, 1000, 700);
+		
+		window = new Window("Buy Product");
+		window.getRightIcons().add(new CloseIcon(window));
+		window.getContentPane().getChildren().add(bp);
 	}
 	
 	public void setLayout() {
@@ -123,22 +140,24 @@ public class BuyProductForms extends Application{
 	
 	@SuppressWarnings("unchecked")
 	public void setTable() {
-		TableColumn<WrapperWatch, Integer> watchIDColumn = new TableColumn<WrapperWatch, Integer>("Watch ID");
-		TableColumn<WrapperWatch, String> watchNameColumn = new TableColumn<WrapperWatch, String>("Watch Name");
-		TableColumn<WrapperWatch, String> watchBrandColumn = new TableColumn<WrapperWatch, String>("Watch Brand");
-		TableColumn<WrapperWatch, Integer> watchPriceColumn = new TableColumn<WrapperWatch, Integer>("Watch Price");
+		TableColumn<Watch, Integer> watchID = new TableColumn<Watch, Integer>("Watch ID");
+		watchID.setMinWidth(40);
+		TableColumn<Watch, String> watchName = new TableColumn<Watch, String>("Watch Name");
+		watchName.setMinWidth(300);
+		TableColumn<Watch, Integer> watchBrand = new TableColumn<Watch, Integer>("Brand ID");
+		watchBrand.setMinWidth(110);
+		TableColumn<Watch, Integer> watchPrice = new TableColumn<Watch, Integer>("Watch Price");
+		watchPrice.setMinWidth(110);
+		TableColumn<Watch, Integer> watchStock = new TableColumn<Watch, Integer>("Watch Stock");
+		watchStock.setMinWidth(110);
 		
-		watchIDColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, Integer>("WatchID"));
-		watchNameColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, String>("WatchName"));
-		watchBrandColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, String>("WatchBrand"));
-		watchPriceColumn.setCellValueFactory(new PropertyValueFactory<WrapperWatch, Integer>("WatchPrice"));
+		watchID.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
+		watchName.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
+		watchBrand.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("BrandID"));
+		watchPrice.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
+		watchStock.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
-		watchTable.getColumns().addAll(watchIDColumn, watchNameColumn, watchBrandColumn, watchPriceColumn);
-		
-		watchIDColumn.setPrefWidth(200);
-		watchPriceColumn.setPrefWidth(200);
-		watchBrandColumn.setPrefWidth(300);
-		watchNameColumn.setPrefWidth(300);
+		watchTable.getColumns().addAll(watchID, watchName, watchBrand, watchPrice, watchStock);
 		
 		TableColumn<Cart, Integer> cartUserIDColumn = new TableColumn<Cart, Integer>("User ID");
 		TableColumn<Cart, Integer> cartWatchIDColumn = new TableColumn<Cart, Integer>("Watch ID");
@@ -155,44 +174,41 @@ public class BuyProductForms extends Application{
 		cartQuantity.setPrefWidth(1000/3);
 	}
 	
-//	public void refreshTable() {
-//		watchList.clear();
-//		getWatch();
-//		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
-//		watchTable.setItems(watchObs);
-//	}
-//	
-//	public void getWatch() {
-//		DBConnect dbConnect = DBConnect.getInstance();
-//		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
-//		
-//		try {
-//			while(rs.next()) {
-//				Integer watchID = rs.getInt("WatchID");
-//				String watchName = rs.getString("WatchName");
-//				String watchBrand = rs.getString("WatchBrand");
-//				Integer watchPrice = rs.getInt("WatchPrice");
-//				Integer watchStock = rs.getInt("Stock");
-//				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void refreshTable() {
+		watchList.clear();
+		getWatch();
+		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchList);
+		watchTable.setItems(watchObs);
+	}
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void getWatch() {
+		DBConnect dbConnect = DBConnect.getInstance();
+		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `watch`");
+		
+		try {
+			while(rs.next()) {
+				int watchID = rs.getInt("WatchID");
+				String watchName = rs.getString("WatchName");
+				int brandID = rs.getInt("BrandID");
+				int watchPrice = rs.getInt("WatchPrice");
+				int watchStock = rs.getInt("WatchStock");
+				
+				Watch watch = new Watch(watchID, watchName, brandID, watchPrice, watchStock);
+				watchList.add(watch);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public Window getWindow() {
 		init();
 		setLayout();
 		setTable();
-//		refreshTable();
-		primaryStage.setScene(scene);
-		primaryStage.setResizable(false);
-		primaryStage.show();
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
+		refreshTable();
+		
+		return window;
 	}
 
 }

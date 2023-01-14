@@ -71,10 +71,15 @@ public class CustomerMenu{
 			lg.loginPage();
 		});
 		
-//		itemtransaction1.setOnAction((event) -> {
-//			ViewTransactionHistory vth = ViewTransactionHistory.getInstance();
-//			bpcust.setCenter(vth.getWindow());
-//		});
+		itemtransaction1.setOnAction((event) -> {
+			ViewTransactionHistory vth = ViewTransactionHistory.getInstance();
+			bpcust.setCenter(vth.getWindow());
+		});
+		
+		itemtransaction.setOnAction((event) -> {
+			BuyProductForms bp = BuyProductForms.getInstance();
+			bpcust.setCenter(bp.getWindow());
+		});
 		
 		Main.changeScene(sc, "Customer Page");
 	}
