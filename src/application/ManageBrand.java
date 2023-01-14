@@ -32,7 +32,7 @@ import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 
-public class ManageBrand extends Application{
+public class ManageBrand {
 	
 	Button btinsertbrand, btupdatebrand, btdeletebrand;
 	Label lbbrand;
