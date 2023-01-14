@@ -59,7 +59,7 @@ public class Admin{
 		bpadmin = new BorderPane();
 		bpadmin.setTop(baradmin);
 		
-//		sc = new Scene(bpadmin, 1000, 700);
+		sc = new Scene(bpadmin, 1000, 700);
 		
 	}
 	
@@ -76,10 +76,6 @@ public class Admin{
 			bpadmin.setCenter(mb.getWindow());
 		});
 		
-		itemmanagement.setOnAction((event) -> {
-			ManageProduct mp = ManageProduct.getInstance();
-			bpadmin.setCenter(mp.getWindow());
-		});
 		
 		Main.changeScene(sc, "Admin");
 	}

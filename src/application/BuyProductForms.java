@@ -141,15 +141,10 @@ public class BuyProductForms{
 	@SuppressWarnings("unchecked")
 	public void setTable() {
 		TableColumn<Watch, Integer> watchID = new TableColumn<Watch, Integer>("Watch ID");
-		watchID.setMinWidth(40);
 		TableColumn<Watch, String> watchName = new TableColumn<Watch, String>("Watch Name");
-		watchName.setMinWidth(300);
 		TableColumn<Watch, Integer> watchBrand = new TableColumn<Watch, Integer>("Brand ID");
-		watchBrand.setMinWidth(110);
 		TableColumn<Watch, Integer> watchPrice = new TableColumn<Watch, Integer>("Watch Price");
-		watchPrice.setMinWidth(110);
 		TableColumn<Watch, Integer> watchStock = new TableColumn<Watch, Integer>("Watch Stock");
-		watchStock.setMinWidth(110);
 		
 		watchID.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
 		watchName.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
@@ -158,6 +153,12 @@ public class BuyProductForms{
 		watchStock.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
 		watchTable.getColumns().addAll(watchID, watchName, watchBrand, watchPrice, watchStock);
+		
+		watchID.setPrefWidth(150);
+		watchName.setPrefWidth(300);
+		watchBrand.setPrefWidth(300);
+		watchPrice.setPrefWidth(150);
+		watchStock.setPrefWidth(100);
 		
 		TableColumn<Cart, Integer> cartUserIDColumn = new TableColumn<Cart, Integer>("User ID");
 		TableColumn<Cart, Integer> cartWatchIDColumn = new TableColumn<Cart, Integer>("Watch ID");

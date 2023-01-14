@@ -2,66 +2,58 @@ package model;
 
 public class WrapperView extends DetailTransaction{
 	private int 
-	ViewTransactionID, 
-	ViewWatchID, 
-	ViewQuantity, 
-	ViewWatchPrice, 
+	TransactionID, 
+	WatchID, 
+	Quantity, 
+	WatchPrice, 
 	SubTotal;
 	
 	private String 
-	ViewWatchName, 
-	ViewBrandName;
-	
-	public WrapperView(int transactionID, int watchID, int quantity, int viewTransactionID, int viewWatchID,
-			int viewQuantity, int viewWatchPrice, String viewWatchName, String viewBrandName, int subTotal) {
+	WatchName, 
+	BrandName;
+
+	public WrapperView(int transactionID, int watchID, int quantity, int transactionIDView, int watchIDView, int quantityView,
+			int watchPrice, int subTotal, String watchName, String brandName) {
 		super(transactionID, watchID, quantity);
-		ViewTransactionID = viewTransactionID;
-		ViewWatchID = viewWatchID;
-		ViewQuantity = viewQuantity;
-		ViewWatchPrice = viewWatchPrice;
-		ViewWatchName = viewWatchName;
-		ViewBrandName = viewBrandName;
+		TransactionID = transactionIDView;
+		WatchID = watchIDView;
+		Quantity = quantityView;
+		WatchPrice = watchPrice;
 		SubTotal = subTotal;
+		WatchName = watchName;
+		BrandName = brandName;
 	}
 
-	public int getViewTransactionID() {
-		return ViewTransactionID;
+	public int getTransactionID() {
+		return TransactionID;
 	}
 
-	public void setViewTransactionID(int viewTransactionID) {
-		ViewTransactionID = viewTransactionID;
+	public void setTransactionID(int transactionID) {
+		TransactionID = transactionID;
 	}
 
-	public int getViewWatchID() {
-		return ViewWatchID;
+	public int getWatchID() {
+		return WatchID;
 	}
 
-	public void setViewWatchID(int viewWatchID) {
-		ViewWatchID = viewWatchID;
+	public void setWatchID(int watchID) {
+		WatchID = watchID;
 	}
 
-	public int getViewQuantity() {
-		return ViewQuantity;
+	public int getQuantity() {
+		return Quantity;
 	}
 
-	public void setViewQuantity(int viewQuantity) {
-		ViewQuantity = viewQuantity;
+	public void setQuantity(int quantity) {
+		Quantity = quantity;
 	}
 
-	public String getViewWatchName() {
-		return ViewWatchName;
+	public int getWatchPrice() {
+		return WatchPrice;
 	}
 
-	public void setViewWatchName(String viewWatchName) {
-		ViewWatchName = viewWatchName;
-	}
-
-	public String getViewBrandName() {
-		return ViewBrandName;
-	}
-
-	public void setViewBrandName(String viewBrandName) {
-		ViewBrandName = viewBrandName;
+	public void setWatchPrice(int watchPrice) {
+		WatchPrice = watchPrice;
 	}
 
 	public int getSubTotal() {
@@ -72,13 +64,22 @@ public class WrapperView extends DetailTransaction{
 		SubTotal = subTotal;
 	}
 
-	public int getViewWatchPrice() {
-		return ViewWatchPrice;
+	public String getWatchName() {
+		return WatchName;
 	}
 
-	public void setViewWatchPrice(int viewWatchPrice) {
-		ViewWatchPrice = viewWatchPrice;
+	public void setWatchName(String watchName) {
+		WatchName = watchName;
 	}
 
+	public String getBrandName() {
+		return BrandName;
+	}
+
+	public void setBrandName(String brandName) {
+		BrandName = brandName;
+	}
+	
+	
+	
 }
- 
