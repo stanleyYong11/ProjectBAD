@@ -171,7 +171,7 @@ public class ManageBrand{
 				
 				if (brand != null){
 					tfnameinput.setText(brand.getBrandName());
-					BrandID = brand.getBrandID();
+//					BrandID = brand.getBrandID();
 				}
 			}
 		});
