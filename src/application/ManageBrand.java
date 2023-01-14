@@ -33,9 +33,13 @@ import jfxtras.labs.scene.control.window.Window;
 import main.Main;
 import model.Brand;
 
+<<<<<<< HEAD
 public class ManageBrand{
 	
 	public static ManageBrand ManageBrand;
+=======
+public class ManageBrand {
+>>>>>>> cbbfd9293f70ece0e160be6001f0d019ab5039de
 	
 	Button btinsertbrand, btupdatebrand, btdeletebrand;
 	Label lbbrand;
