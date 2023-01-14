@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -77,11 +78,11 @@ backFill2;
 	}
 
 	public void init() {
+		backFill1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		backFill2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
 		backg = new Background(backFill);
 		backg1 = new Background(backFill1);
 		backg2 = new Background(backFill2);
-		backFill1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
-		backFill2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
 		
 		regLBL = new Label("Register");
 		regLBL.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -141,32 +142,35 @@ backFill2;
 		gp.add(passPF, 0, 8);
 		gp.add(coPasswordLBL, 0, 9);
 		gp.add(coPassPF, 0, 10);
-		gp.add(forregBtn, 0, 11);
+		gp.add(regBtn, 0, 11);
+		gp.add(backLoginBtn, 0, 12);
 		gp.setVgap(15);
+		
 		regBPane = new BorderPane();
 		regBPane.setCenter(gp);
 		
 		GridPane.setHalignment(regLBL, HPos.CENTER);
         gp.setAlignment(Pos.CENTER);
+        
         BorderPane.setAlignment(gp, Pos.CENTER);
 		gp.setAlignment(Pos.CENTER);
-		}
+	}
 		
 		public void display() {	
-		regBPane.setPadding(new Insets(100, 90, 100, 90));
-		scenes = new Scene(regBPane, 600, 700);
+		regBPane.setMargin(gp, new Insets(100));;
+		scenes = new Scene(regBPane, 600, 800);
 		
-		  gp.setStyle("-fx-background-color: white;");
-		  BackgroundFill backfills = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
-			Background backgrnd = new Background(backfills);
-			regBPane.setBackground(backgrnd);
+		gp.setStyle("-fx-background-color: white;");
+		BackgroundFill backfills = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
+		Background backgrnd = new Background(backfills);
+		regBPane.setBackground(backgrnd);
 	}
 	
 	public void registerPage() {
 		init();
 		positions();
 		display();
-
+		
 		regBtn.setOnAction((event) -> {
 			String pass = passPF.getText();
 				System.out.println(pass);
@@ -239,6 +243,11 @@ backFill2;
 				passMiss.show();
 			}
 			});
+
+		backLoginBtn.setOnAction((event) -> {
+			Login lg = Login.getInstance();
+			lg.loginPage();
+		});
 		
 		Main.changeScene(scenes, "Register");
 	}
