@@ -59,6 +59,7 @@ public class BuyProductForms extends Application{
 	public void init() {
 		bp = new BorderPane();
 		gp = new GridPane();
+		fp = new FlowPane();
 		
 		bp2 = new BorderPane();
 		gp2 = new GridPane();
@@ -99,7 +100,7 @@ public class BuyProductForms extends Application{
 		bp2.setTop(gp);
 		bp2.setBottom(gp2);
 		bp2.setAlignment(gp, Pos.TOP_LEFT);
-		bp2.setAlignment(gp2, Pos.BOTTOM_CENTER);
+		bp2.setAlignment(gp2, Pos.CENTER);
 		
 		fp.getChildren().add(clearBtn);
 		fp.getChildren().add(checkoutBtn);
@@ -107,14 +108,17 @@ public class BuyProductForms extends Application{
 		fp.setVgap(10);
 		fp.setPadding(new Insets(10, 10, 10, 10));
 		
+		fp.setAlignment(Pos.CENTER);
+		
+		bp3.setCenter(cartTable);
 		bp3.setBottom(fp);
+		
+		bp3.setAlignment(cartTable, Pos.TOP_CENTER);
 		
 		bp.setTop(watchTable);
 		bp.setCenter(bp2);
 		bp.setBottom(bp3);
-		bp.setBottom(addBtn);
-		
-		bp.setAlignment(addBtn, Pos.BOTTOM_CENTER);
+
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -131,6 +135,11 @@ public class BuyProductForms extends Application{
 		
 		watchTable.getColumns().addAll(watchIDColumn, watchNameColumn, watchBrandColumn, watchPriceColumn);
 		
+		watchIDColumn.setPrefWidth(200);
+		watchPriceColumn.setPrefWidth(200);
+		watchBrandColumn.setPrefWidth(300);
+		watchNameColumn.setPrefWidth(300);
+		
 		TableColumn<Cart, Integer> cartUserIDColumn = new TableColumn<Cart, Integer>("User ID");
 		TableColumn<Cart, Integer> cartWatchIDColumn = new TableColumn<Cart, Integer>("Watch ID");
 		TableColumn<Cart, Integer> cartQuantity = new TableColumn<Cart, Integer>("Quantity");
@@ -140,38 +149,42 @@ public class BuyProductForms extends Application{
 		cartQuantity.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
 		
 		cartTable.getColumns().addAll(cartUserIDColumn, cartWatchIDColumn, cartQuantity);
-	}
-	
-	public void refreshTable() {
-		watchList.clear();
-		getWatch();
-		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
-		watchTable.setItems(watchObs);
-	}
-	
-	public void getWatch() {
-		DBConnect dbConnect = DBConnect.getInstance();
-		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
 		
-		try {
-			while(rs.next()) {
-				Integer watchID = rs.getInt("WatchID");
-				String watchName = rs.getString("WatchName");
-				String watchBrand = rs.getString("WatchBrand");
-				Integer watchPrice = rs.getInt("WatchPrice");
-				Integer watchStock = rs.getInt("Stock");
-				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		cartUserIDColumn.setPrefWidth(1000/3);
+		cartWatchIDColumn.setPrefWidth(1000/3);
+		cartQuantity.setPrefWidth(1000/3);
 	}
+	
+//	public void refreshTable() {
+//		watchList.clear();
+//		getWatch();
+//		ObservableList<WrapperWatch> watchObs = FXCollections.observableArrayList(watchList);
+//		watchTable.setItems(watchObs);
+//	}
+//	
+//	public void getWatch() {
+//		DBConnect dbConnect = DBConnect.getInstance();
+//		ResultSet rs = dbConnect.executeQuery("SELECT * FROM `ujicoba`");
+//		
+//		try {
+//			while(rs.next()) {
+//				Integer watchID = rs.getInt("WatchID");
+//				String watchName = rs.getString("WatchName");
+//				String watchBrand = rs.getString("WatchBrand");
+//				Integer watchPrice = rs.getInt("WatchPrice");
+//				Integer watchStock = rs.getInt("Stock");
+//				watchList.add(new WrapperWatch(watchID, watchPrice, watchStock, watchName, watchBrand));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-//		init();
-//		setLayout();
-//		setTable();
+		init();
+		setLayout();
+		setTable();
 //		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
