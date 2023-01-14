@@ -60,11 +60,16 @@ public class CustomerMenu{
 		bpcust = new BorderPane();
 		bpcust.setTop(barcust);
 		
-		sc = new Scene(bpcust, 900, 1000);
+		sc = new Scene(bpcust, 1000, 700);
 	}
 	
 	public void customerMenuPage() {
 		init();
+		
+		itemcust.setOnAction((event) -> {
+			Login lg = Login.getInstance();
+			lg.loginPage();
+		});
 		
 		Main.changeScene(sc, "Customer Page");
 	}
