@@ -97,7 +97,7 @@ public class BuyProductForms{
 		selectValue = new Label("None");
 		
 		qty = new Label("Quantity: ");
-		qtySP = new Spinner<>();
+		qtySP = new Spinner<>(0, 100, 0);
 		addBtn = new Button("Add Watch To Cart");
 		clearBtn = new Button("Clear Cart");
 		checkoutBtn = new Button("Checkout");
