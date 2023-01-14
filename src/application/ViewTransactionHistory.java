@@ -27,6 +27,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.HeaderTransaction;
 import model.ViewTransaction;
@@ -205,7 +206,11 @@ public class ViewTransactionHistory{
 		bpane.setBackground(bg);
 
 		
-		scene = new Scene(bpane, 1000, 700);
+//		scene = new Scene(bpane, 1000, 700);
+		
+		window = new Window("View Transaction History");
+		window.getRightIcons().add(new CloseIcon(window));
+		window.getContentPane().getChildren().add(bpane);
 	}
 	
 	private void setEvent() {

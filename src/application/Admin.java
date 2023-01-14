@@ -59,7 +59,7 @@ public class Admin{
 		bpadmin = new BorderPane();
 		bpadmin.setTop(baradmin);
 		
-		sc = new Scene(bpadmin, 1000, 700);
+//		sc = new Scene(bpadmin, 1000, 700);
 		
 	}
 	

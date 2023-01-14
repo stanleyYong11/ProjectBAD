@@ -133,8 +133,8 @@ public class Login{
 				CustomerMenu cm = CustomerMenu.getInstance();
 				cm.customerMenuPage();
 			} else if (emailTF.getText().equals("a@b.com")) {
-				Admin cm = Admin.getInstance();
-				cm.adminPage();
+				Admin am = Admin.getInstance();
+				am.adminPage();
 			}
 		});
 		
