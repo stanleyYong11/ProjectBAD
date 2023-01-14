@@ -1,5 +1,6 @@
 package application;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,11 +28,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Watch;
 
-public class ManageProduct extends Application{
+public class ManageProduct{
 
+	public static ManageProduct ManageProduct;
+	
 	Scene scene;
 	BorderPane bp;
 	GridPane gp;
@@ -49,6 +54,19 @@ public class ManageProduct extends Application{
 	Button insertBtn;
 	Button updateBtn;
 	Button deleteBtn;
+	
+	DBConnect dbConnect = DBConnect.getInstance();
+	
+	Window window;
+	
+	int WatchID; 
+	
+	public static ManageProduct getInstance() {
+		if (ManageProduct == null) {
+			ManageProduct = new ManageProduct();
+		}
+		return ManageProduct;
+	}
 	
 	public void init() {
 		gp = new GridPane();
@@ -101,7 +119,11 @@ public class ManageProduct extends Application{
 		bp.setCenter(gp);
 		bp.setBottom(fp);
 		
-		scene = new Scene(bp, 700, 550);
+//		scene = new Scene(bp, 700, 550);
+		
+		window = new Window("Manage Product");
+		window.getRightIcons().add(new CloseIcon(window));
+		window.getContentPane().getChildren().add(bp);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -159,7 +181,6 @@ public class ManageProduct extends Application{
 	
 	public void getWatch() {
 		
-		DBConnect dbConnect = DBConnect.getInstance();
 		ResultSet rs = null;
 		rs = dbConnect.executeQuery("SELECT * FROM `watch`");
 		
@@ -194,6 +215,8 @@ public class ManageProduct extends Application{
 					watchNameTF.setText(watch.getWatchName());
 					watchPriceTF.setText(String.valueOf(watch.getWatchPrice()));
 					watchStockSp.setPromptText(String.valueOf(watch.getWatchStock()));
+					
+					WatchID = watch.getWatchID();
 //					watchBrandCB.setPromptText(String.valueOf(watch.getBrandID()));
 //					int brandID = watch.getWatchID();
 					
@@ -205,19 +228,65 @@ public class ManageProduct extends Application{
 				}
 			}
 		});
+		
+		deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent arg0) {
+				
+				PreparedStatement ps = dbConnect.prepareStatement("delete from watch where WatchID = ?");
+				
+				try {
+					ps.setInt(1, WatchID);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				refreshTable();
+			}
+			
+		});
+		
+		updateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				DBConnect dbConnect = DBConnect.getInstance();
+				
+				PreparedStatement ps = dbConnect.prepareStatement("update watch set WatchName = ? where WatchID = ?");
+				
+				try {
+					ps.setString(1, watchNameTF.getText());
+					ps.setInt(2,  WatchID);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				refreshTable();
+			}
+		});
+		
+		insertBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				
+				DBConnect dbConnect = DBConnect.getInstance();
+				dbConnect.execute(String.format("INSERT INTO `watch` (`WatchID`, `BrandID`, `WatchName`, `WatchPrice`, `WatchStock`) VALUES (NULL, '%d', '%s', '%s', '%s');", 2, watchNameTF.getText(), watchPriceTF.getText(), watchStockSp.getValue()));
+				
+				refreshTable();
+			}
+			
+		});
 	}
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+
+	public Window getWindow() {
 		init();
 		table();
 		refreshTable();
 		setEvent();
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
+		
+		return window;
 	}
 }

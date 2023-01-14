@@ -76,6 +76,10 @@ public class Admin{
 			bpadmin.setCenter(mb.getWindow());
 		});
 		
+		itemmanagement.setOnAction((event) -> {
+			ManageProduct mp = ManageProduct.getInstance();
+			bpadmin.setCenter(mp.getWindow());
+		});
 		
 		Main.changeScene(sc, "Admin");
 	}
