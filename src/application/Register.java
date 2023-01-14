@@ -1,13 +1,16 @@
 package application;
 
+import connect.DBConnect;
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -46,6 +49,7 @@ TextField emailTF;
 
 RadioButton maleRB;
 RadioButton femaleRB;
+String gender;
 
 PasswordField passPF;
 PasswordField coPassPF;
@@ -97,6 +101,7 @@ backFill2;
 		grGender = new ToggleGroup();
 		maleRB.setToggleGroup(grGender);
 		femaleRB.setToggleGroup(grGender);
+
 		
 		genderRadBtn = new HBox(10);
 		genderRadBtn.getChildren().add(maleRB);
@@ -165,13 +170,23 @@ backFill2;
 		Background backgrnd = new Background(backfills);
 		regBPane.setBackground(backgrnd);
 	}
-	
+		
 	public void registerPage() {
 		init();
 		positions();
 		display();
 		
+		maleRB.setOnAction((event) -> {
+			gender = maleRB.getText();
+		});
+		
+		femaleRB.setOnAction((event) -> {
+			gender = femaleRB.getText();
+		});
+		
 		regBtn.setOnAction((event) -> {
+			DBConnect dbConnect = DBConnect.getInstance();
+			dbConnect.execute(String.format("INSERT INTO `user` (`UserID`, `UserName`, `UserEmail`, `UserPassword`, `UserGender`, `UserRole`) VALUES (NULL, '%s', '%s', '%s', '%s', '%s');", nameTF.getText(), emailTF.getText(), passPF.getText(), gender, "Customer"));
 			String pass = passPF.getText();
 				System.out.println(pass);
 				int words = emailTF.getText().length();
@@ -241,7 +256,12 @@ backFill2;
 				passMiss.setHeaderText("Password Error!");
 				passMiss.setContentText("The confirmation password must be same with inputed password!");
 				passMiss.show();
+			}else {
+				Login lg = Login.getInstance();
+				lg.loginPage();
 			}
+			
+			
 			});
 
 		backLoginBtn.setOnAction((event) -> {
